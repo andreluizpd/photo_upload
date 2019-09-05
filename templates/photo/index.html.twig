@@ -17,7 +17,7 @@
       <th>Tamanho</th>
       <th>Preço</th>
       <th>Copias</th>
-      <th>File Name</th>
+      <th>Foto enviada</th>
     </tr>
   </thead>
   <tbody>
@@ -61,7 +61,8 @@
   </tbody>
 </table>
 {% else %}
-<p>No photos to display</p>
+<h2>Nenhuma imagem. Faça o upload:</h2>
+<a href="/upload" class="btn btn-dark">Enviar arquivo</a>
 {% endif %}
 
 {% endblock %}

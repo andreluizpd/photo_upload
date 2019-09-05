@@ -15,7 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\Response;
+
+use App\Service\FileUploader;
 
 class PhotoController extends AbstractController
 {
@@ -33,7 +34,7 @@ class PhotoController extends AbstractController
   /**
    * @Route(path="/upload", methods={"GET", "POST"}, name="new_photo")
    */
-  public function new(Request $request)
+  public function new(Request $request, FileUploader $fileUploader)
   {
     $photo = new Photo();
 
@@ -96,38 +97,16 @@ class PhotoController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       $photo = $form->getData();
-
+      $quantidade = $photo->getCopias();
+      $photo->setTamanho($form['tamanho']->getData());
+      $valor = $photo->getTamanho()->getValor();
+      $photo->setPreco($quantidade * $valor);
       $photoUploaded = $form['photo']->getData();
 
       if ($photoUploaded) {
-        $originalFilename = pathinfo($photoUploaded->getClientOriginalName(), PATHINFO_FILENAME);
-
-        // this is needed to safely include the file name as part of the URL
-        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-        $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoUploaded->guessExtension();
-
-        // Move the file to the directory where brochures are stored
-        try {
-          $photoUploaded->move(
-            $this->getParameter('photo_directory'),
-            $newFilename
-          );
-        } catch (FileException $e) {
-          // ... handle exception if something happens during file upload
-        }
-
-        // updates the 'brochureFilename' property to store the PDF file name
-        // instead of its contents
-        $photo->setPhotoFileName($newFilename);
+        $fileName = $fileUploader->upload($photoUploaded);
+        $photo->setPhotoFileName($fileName);
       }
-
-      $quantidade = $photo->getCopias();
-
-      $photo->setTamanho($form['tamanho']->getData());
-
-      $valor = $photo->getTamanho()->getValor();
-
-      $photo->setPreco($quantidade * $valor);
 
       // ... persist the variable or any other work
       $entityManager = $this->getDoctrine()->getManager();
