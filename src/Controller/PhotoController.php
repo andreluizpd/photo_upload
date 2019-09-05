@@ -121,7 +121,7 @@ class PhotoController extends AbstractController
         $photo->setPhotoFileName($newFilename);
       }
 
-      $quantidade = $photo->getCopias(); // OK
+      $quantidade = $photo->getCopias();
 
       $photo->setTamanho($form['tamanho']->getData());
 
@@ -129,7 +129,7 @@ class PhotoController extends AbstractController
 
       $photo->setPreco($quantidade * $valor);
 
-      // ... persist the $product variable or any other work
+      // ... persist the variable or any other work
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($photo);
       $entityManager->flush();
