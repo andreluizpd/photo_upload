@@ -4,16 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Photo;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PhotoController extends AbstractController
 {
@@ -29,8 +26,7 @@ class PhotoController extends AbstractController
   }
 
   /**
-   * @Route("/upload", name="new_photo")
-   * @Method({"GET","POST"})
+   * @Route(path="/upload", methods={"GET", "POST"}, name="new_photo")
    */
   public function new(Request $request)
   {

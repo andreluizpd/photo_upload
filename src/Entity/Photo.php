@@ -17,11 +17,6 @@ class Photo
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $tamanho;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $preco;
@@ -35,6 +30,12 @@ class Photo
      * @ORM\Column(type="integer")
      */
     private $copias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tamanhos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tamanho;
 
     public function getId(): ?int
     {
