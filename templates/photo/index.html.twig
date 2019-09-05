@@ -27,7 +27,33 @@
       <td>{{ photo.tamanho.tamanho }}</td>
       <td>{{ "R$ %.2f"|format(photo.preco) }}</td>
       <td>{{ photo.copias }}</td>
-      <td><a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">View File ({{ photo.photoFileName }})</a>
+      <td>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{ photo.id }}">
+          Ver Imagem
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ photo.id }}" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Imagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <img src="{{ asset('uploads/photos/' ~ photo.photoFileName) }}" alt="" class="img-fluid">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </td>
     </tr>
     {% endfor %}
