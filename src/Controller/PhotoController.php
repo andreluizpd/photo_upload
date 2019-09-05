@@ -37,8 +37,6 @@ class PhotoController extends AbstractController
   {
     $photo = new Photo();
 
-    // $tamanhosDisponiveis = $this->getDoctrine()->getRepository(Tamanhos::class)->findAll();
-
     $tamanho1 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(1);
     $tamanho2 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(2);
     $tamanho3 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(3);
@@ -51,17 +49,30 @@ class PhotoController extends AbstractController
           '12X15' => $tamanho2,
           '13X18' => $tamanho3,
         ],
+        'attr' => [
+          'class' => 'form-control mb-3'
+        ],
+        'label' => 'Tamanho para impressão'
       ])
-      ->add('copias', NumberType::class, ['attr' => ['class' => 'form-control'], 'html5' => true])
+      ->add('copias', NumberType::class, [
+        'attr' => ['class' => 'form-control mb-3'],
+        'html5' => true,
+        'label' => 'Número de cópias'
+      ])
 
       ->add('photo', FileType::class, [
-        'label' => 'Foto para upload',
+        'label' => 'Selecione uma imagem para upload',
+
         // unmapped means that this field is not associated to any entity property
         'mapped' => false,
 
-        // make it optional so you don't have to re-upload the PDF file
-        // everytime you edit the Product details
+        // make it optional so you don't have to re-upload the file
+        // everytime you edit the details
         'required' => false,
+
+        'attr' => [
+          'class' => 'form-control-file mb-3'
+        ],
 
         'constraints' => [
           new File([
@@ -70,7 +81,7 @@ class PhotoController extends AbstractController
               'image/jpeg',
               'image/png',
             ],
-            'mimeTypesMessage' => 'Please upload a valid image document',
+            'mimeTypesMessage' => 'Please upload a valid image',
           ])
         ]
       ])
@@ -106,10 +117,6 @@ class PhotoController extends AbstractController
         $photo->setPhotoFileName($newFilename);
       }
 
-      // $idTamanho = $form['tamanho']->getData();
-      // $tamanho = $this->getDoctrine()->getRepository(Tamanhos::class)->find($idTamanho);
-      // $photo->setTamanho($tamanho);
-
       $quantidade = $photo->getCopias(); // OK
 
       $photo->setTamanho($form['tamanho']->getData());
@@ -122,14 +129,7 @@ class PhotoController extends AbstractController
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($photo);
       $entityManager->flush();
-      // return $this->redirectToRoute('photo_list');
-
-
-      // $form1 = $form['tamanho']->getData();
-
-      // return new Response(
-      //   'id: ' . $form1
-      // );
+      return $this->redirectToRoute('photo_list');
     }
 
 

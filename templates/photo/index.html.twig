@@ -25,9 +25,9 @@
     <tr>
       <td>{{ photo.id }}</td>
       <td>{{ photo.tamanho.tamanho }}</td>
-      <td>{{ photo.preco }}</td>
+      <td>{{ "R$ %.2f"|format(photo.preco) }}</td>
       <td>{{ photo.copias }}</td>
-      <td><a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">View File (IMAGE)</a>
+      <td><a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">View File ({{ photo.photoFileName }})</a>
       </td>
     </tr>
     {% endfor %}
