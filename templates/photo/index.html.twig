@@ -44,10 +44,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                <img src="{{ asset('uploads/photos/' ~ photo.photoFileName) }}" alt="" class="img-fluid">
+                <img src="{{ asset('uploads/photos/' ~ photo.photoFileName) }}" alt="" class="img-fluid d-block">
+                <a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">Ver Original</a>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
               </div>
             </div>
           </div>
