@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Entity\Tamanhos;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Response;
 
 class PhotoController extends AbstractController
 {
@@ -32,19 +37,23 @@ class PhotoController extends AbstractController
   {
     $photo = new Photo();
 
+    // $tamanhosDisponiveis = $this->getDoctrine()->getRepository(Tamanhos::class)->findAll();
 
-    // Photo
-    //  tamanho
-    //  preco
-    //  copias
-    //  photoFileName
+    $tamanho1 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(1);
+    $tamanho2 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(2);
+    $tamanho3 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(3);
 
 
     $form = $this->createFormBuilder($photo)
-      ->add('tamanho', TextType::class, ['attr' => ['class' => 'form-control']])
-      ->add('preco', TextType::class, ['attr' => ['class' => 'form-control']])
-      ->add('copias', TextType::class, ['attr' => ['class' => 'form-control']])
-      // ->add('photoFileName', TextType::class, ['attr' => ['class' => 'form-control']])
+      ->add('tamanho', ChoiceType::class, [
+        'choices' => [
+          '10X15' => $tamanho1,
+          '12X15' => $tamanho2,
+          '13X18' => $tamanho3,
+        ],
+      ])
+      ->add('copias', NumberType::class, ['attr' => ['class' => 'form-control'], 'html5' => true])
+
       ->add('photo', FileType::class, [
         'label' => 'Foto para upload',
         // unmapped means that this field is not associated to any entity property
@@ -67,14 +76,6 @@ class PhotoController extends AbstractController
       ])
       ->add('save', SubmitType::class, ['label' => "Create", 'attr' => ['class' => 'btn btn-primary mt-3']])
       ->getform();
-
-
-    // $form = $this->createFormBuilder($photo)
-    //   ->add('tamanho', TextType::class)
-    //   ->add('preco', TextType::class)
-    //   ->add('save', SubmitType::class, ['label' => 'Create Photo'])
-    //   ->getform();
-
 
     $form->handleRequest($request);
 
@@ -105,14 +106,30 @@ class PhotoController extends AbstractController
         $photo->setPhotoFileName($newFilename);
       }
 
+      // $idTamanho = $form['tamanho']->getData();
+      // $tamanho = $this->getDoctrine()->getRepository(Tamanhos::class)->find($idTamanho);
+      // $photo->setTamanho($tamanho);
+
+      $quantidade = $photo->getCopias(); // OK
+
+      $photo->setTamanho($form['tamanho']->getData());
+
+      $valor = $photo->getTamanho()->getValor();
+
+      $photo->setPreco($quantidade * $valor);
 
       // ... persist the $product variable or any other work
-
-
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($photo);
       $entityManager->flush();
-      return $this->redirectToRoute('photo_list');
+      // return $this->redirectToRoute('photo_list');
+
+
+      // $form1 = $form['tamanho']->getData();
+
+      // return new Response(
+      //   'id: ' . $form1
+      // );
     }
 
 

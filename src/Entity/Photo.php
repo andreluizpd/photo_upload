@@ -22,17 +22,17 @@ class Photo
     private $preco;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $photoFileName;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $copias;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tamanhos")
+     * @ORM\Column(type="string", length=255)
+     */
+    private $photoFileName;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tamanhos", inversedBy="photos")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tamanho;
@@ -40,18 +40,6 @@ class Photo
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTamanho(): ?string
-    {
-        return $this->tamanho;
-    }
-
-    public function setTamanho(string $tamanho): self
-    {
-        $this->tamanho = $tamanho;
-
-        return $this;
     }
 
     public function getPreco(): ?float
@@ -62,6 +50,18 @@ class Photo
     public function setPreco(float $preco): self
     {
         $this->preco = $preco;
+
+        return $this;
+    }
+
+    public function getCopias(): ?int
+    {
+        return $this->copias;
+    }
+
+    public function setCopias(int $copias): self
+    {
+        $this->copias = $copias;
 
         return $this;
     }
@@ -78,14 +78,14 @@ class Photo
         return $this;
     }
 
-    public function getCopias(): ?int
+    public function getTamanho(): ?Tamanhos
     {
-        return $this->copias;
+        return $this->tamanho;
     }
 
-    public function setCopias(int $copias): self
+    public function setTamanho(?Tamanhos $tamanho): self
     {
-        $this->copias = $copias;
+        $this->tamanho = $tamanho;
 
         return $this;
     }

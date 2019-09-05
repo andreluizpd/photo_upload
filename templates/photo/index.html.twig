@@ -24,7 +24,7 @@
     {% for photo in photos %}
     <tr>
       <td>{{ photo.id }}</td>
-      <td>{{ photo.tamanho }}</td>
+      <td>{{ photo.tamanho.tamanho }}</td>
       <td>{{ photo.preco }}</td>
       <td>{{ photo.copias }}</td>
       <td><a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">View File (IMAGE)</a>
