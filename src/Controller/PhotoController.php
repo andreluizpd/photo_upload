@@ -37,18 +37,22 @@ class PhotoController extends AbstractController
   {
     $photo = new Photo();
 
-    $tamanho1 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(1);
-    $tamanho2 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(2);
-    $tamanho3 = $this->getDoctrine()->getRepository(Tamanhos::class)->find(3);
+    $tamanhos = $this->getDoctrine()->getRepository(Tamanhos::class)->findAll();
 
 
     $form = $this->createFormBuilder($photo)
       ->add('tamanho', ChoiceType::class, [
         'choices' => [
-          '10X15' => $tamanho1,
-          '12X15' => $tamanho2,
-          '13X18' => $tamanho3,
+          $tamanhos
         ],
+        'choice_label' => function (Tamanhos $tamanho) {
+          return strtoupper($tamanho->getTamanho());
+        },
+
+        'group_by' => function (Tamanhos $tamanho) {
+          return 'Tamanhos disponíveis';
+        },
+
         'attr' => [
           'class' => 'form-control mb-3'
         ],
