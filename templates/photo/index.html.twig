@@ -2,9 +2,39 @@
 
 {% block title %}Simple File Uploader{% endblock %}
 
+
+{# //  tamanho
+    //  preco
+    //  copias
+    //  photoFileName #}
+
 {% block body %}
-
-
-<h1>Your lucky number is {{ number }}</h1>
+{% if photos %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Tamanho</th>
+      <th>Preço</th>
+      <th>Copias</th>
+      <th>File Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for photo in photos %}
+    <tr>
+      <td>{{ photo.id }}</td>
+      <td>{{ photo.tamanho }}</td>
+      <td>{{ photo.preco }}</td>
+      <td>{{ photo.copias }}</td>
+      <td><a href="{{ asset('uploads/photos/' ~ photo.photoFileName) }}">View File (IMAGE)</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No photos to display</p>
+{% endif %}
 
 {% endblock %}
