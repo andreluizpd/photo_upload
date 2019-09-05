@@ -10,7 +10,7 @@ composer install
 
 # Edit the env file and add DB params
 
-# Create Article schema
+# Create schema
 php bin/console doctrine:migrations:diff
 # Run migrations
 php bin/console doctrine:migrations:migrate
