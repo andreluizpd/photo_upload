@@ -25,6 +25,9 @@ final class Version20190905173514 extends AbstractMigration
         $this->addSql('CREATE TABLE photo (id INT AUTO_INCREMENT NOT NULL, tamanho_id INT NOT NULL, preco DOUBLE PRECISION NOT NULL, copias INT NOT NULL, photo_file_name VARCHAR(255) NOT NULL, INDEX IDX_14B7841850E68399 (tamanho_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tamanhos (id INT AUTO_INCREMENT NOT NULL, tamanho VARCHAR(10) NOT NULL, valor DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE photo ADD CONSTRAINT FK_14B7841850E68399 FOREIGN KEY (tamanho_id) REFERENCES tamanhos (id)');
+        $this->addSql('INSERT INTO tamanhos (id, tamanho, valor) VALUES (1,\'10X20\',0.10)');
+        $this->addSql('INSERT INTO tamanhos (id, tamanho, valor) VALUES (2,\'10X30\',0.15)');
+        $this->addSql('INSERT INTO tamanhos (id, tamanho, valor) VALUES (3,\'12X40\',0.20)');
     }
 
     public function down(Schema $schema) : void
